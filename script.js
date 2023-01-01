@@ -89,13 +89,16 @@ window.addEventListener("load", function () {
     ctx.fill();
   }
 
-  function drawFactal() {
+  function drawFactal(size,x,y,scale,rot) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.save();
     ctx.lineWidth = lineWidth;
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
     ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.setTransform(scale, 0, 0, scale, canvas.width / 2, canvas.height/2);
+    ctx.rotate(rot);
+    // ctx.fillRect(size ,size , size, size);  
 
     for (let i = 0; i < sides; i++) {
         ctx.scale(0.95,0.95)
@@ -159,6 +162,28 @@ window.addEventListener("load", function () {
     ctx.shadowBlur = 10;
     drawFactal();
   });
+
+  function drawBox(col,size,x,y,scale,rot){
+    ctx.fillStyle = col;
+    // use setTransform as it overwrites the canvas transform rather than multiply it as the other transform functions do
+    ctx.setTransform(scale, 0, 0, scale, x, y);
+    ctx.rotate(rot);
+    ctx.fillRect(-size / 2,-size / 2, size, size);  
+}
+function update(time){
+  ctx.clearRect(0,0,512,256)
+  drawFactal(100,125,125,1,0); // draw none rotated box
+  drawFactal(50,225,125,1,time / 2000); // draw rotating box
+  // drawFactal(25,275,100,1,-time / 250); // draw rotating box
+  // drawFactal(25,275,150,1,-time / 250); // draw rotating box
+  // after using transforms you need to reset the transform to the default
+  // if you plan to render anything in the default coordinate system
+  ctx.setTransform(1, 0 ,0 , 1, 0, 0); // reset to default transform
+
+  requestAnimationFrame(update);
+}
+
+requestAnimationFrame(update);
   // console.log('ctx',ctx);
   // console.log('canvas',canvas);
 });
