@@ -55,7 +55,7 @@ window.addEventListener("load", function () {
     ctx.lineTo(size, 0);
     ctx.bezierCurveTo(
       0,
-      size * spread * -3,
+      size * spread * -50,
       size * 5,
       size * 10 * spread,
       0,
